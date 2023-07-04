@@ -10,6 +10,8 @@
         <textarea id="Chat-Log" cols="50" rows="50" style="position:absolute;right:10px"></textarea>
         <input type="text" id="Message-Input" style="position: absolute;right: 170px;bottom:170px">
         <input type="submit" id="Message-Submit" value="Send Message" style="position: absolute;right: 70px;bottom:170px">
+        <input type = "button" id="Toggle-Camera" value="Hide Camera" style="position: absolute;right: 180px;bottom:140px" >
+        <input type = "button" id="Toggle-Mic" value="Mute Audio" style="position: absolute;right: 280px;bottom:140px" >
         {{ users|json_script:"users"}}
 
     </body>

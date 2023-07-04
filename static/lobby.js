@@ -1,4 +1,4 @@
-document.querySelector("#Room-Name-Input").focus()
+
                 document.querySelector("#Room-Name-Input").onkeyup = e =>{
                     if (e.keyCode === 13){
                         document.querySelector("#Room-Name-Submit").click()

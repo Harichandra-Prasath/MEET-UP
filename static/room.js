@@ -3,13 +3,14 @@ let users = JSON.parse(document.getElementById("users").textContent)
 let LocalVideo = document.getElementById("local-stream")
 let Username = sessionStorage.getItem('username');
 let Body = document.getElementById('body')
-
+let ToggleCamera = document.getElementById('Toggle-Camera')
+let ToggleMic = document.getElementById('Toggle-Mic')
 
 let localstream;
 let peerconnections={};
 let remotevideos = {};
 
-navigator.mediaDevices.getUserMedia({video:true,audio:false}).then(stream=>{
+navigator.mediaDevices.getUserMedia({video:true,audio:true}).then(stream=>{
     localstream = stream
     LocalVideo.srcObject = stream
     if (users.length>1){
@@ -202,4 +203,34 @@ document.querySelector('#Message-Submit').onclick = e =>{
 
 }
 
+ToggleCamera.addEventListener("click" , togglecamera)
+ToggleMic.addEventListener("click" , togglemic)
+
+
+
+function togglecamera() {
+    let videotrack = localstream.getTracks().find(track => track.kind ==="video")
+
+    if (videotrack.enabled){
+        videotrack.enabled = false
+        ToggleCamera.value = "Show Camera"
+    }
+    else {
+        videotrack.enabled = true
+        ToggleCamera.value = "Hide Camera"
+    }
+}
+
+function togglemic() {
+    let audiotrack = localstream.getTracks().find(track => track.kind ==="audio")
+
+    if (audiotrack.enabled){
+        audiotrack.enabled = false
+        ToggleMic.value = "UnMute Audio"
+    }
+    else {
+        audiotrack.enabled = true
+        ToggleMic.value = "Mute Audio"
+    }
+}
 

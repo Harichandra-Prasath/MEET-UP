@@ -2,3 +2,4 @@
 .env
 __pycache__
 chat/migrations
+a.html
