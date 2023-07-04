@@ -1,0 +1,17 @@
+{% load static %}
+
+<html lang="en">
+    <head>
+        <title>Video Chat</title>
+    </head>
+    <body id="body">
+        <video id="local-stream" autoplay></video>
+        {{ room_name|json_script:"room-name"}}
+        <textarea id="Chat-Log" cols="50" rows="50" style="position:absolute;right:10px"></textarea>
+        <input type="text" id="Message-Input" style="position: absolute;right: 170px;bottom:170px">
+        <input type="submit" id="Message-Submit" value="Send Message" style="position: absolute;right: 70px;bottom:170px">
+        {{ users|json_script:"users"}}
+
+    </body>
+    <script src="{% static 'room.js' %}"></script>
+</html>

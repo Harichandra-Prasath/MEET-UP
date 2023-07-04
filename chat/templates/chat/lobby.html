@@ -1,0 +1,24 @@
+{% load static %}
+
+<html lang="en">
+    <head>
+        <title>Join Room</title>
+    </head>
+    <body>
+        Enter the name you wish to use?<br>
+        <br>
+        <form method="POST" action="">
+            {% csrf_token %}
+            <input id="User-Name-Input" type="text" name="user">
+            <br>
+            <br>
+            Enter the room name you wish to enter?<br>
+            <br>
+            <input id="Room-Name-Input" type="text" name="room">
+            <input id="Room-Name-Submit" type="submit" value="Enter">
+        </form>
+        
+        
+    </body>
+    <script src="{% static 'lobby.js'%}"></script>
+</html>
