@@ -12,6 +12,7 @@ class VideoConsumer(AsyncWebsocketConsumer):
         )
 
         await self.accept()
+    
 
     async def receive(self, text_data):
         event_data = json.loads(text_data)
@@ -29,7 +30,7 @@ class VideoConsumer(AsyncWebsocketConsumer):
             self.room_group_name, {"type": "send_answer", "message": [event_data["sender"],event_data["answer"],event_data["reciever"]]}
         )
         elif type=="ice-candidate":
-            #print(event_data["user"],event_data["icecandidates"])
+            #print(event_data["sender"],event_data["icecandidates"])
             await self.channel_layer.group_send(
             self.room_group_name, {"type": "send_candidate", "message": [event_data["sender"],event_data["icecandidates"],event_data["reciever"]]}
         )
@@ -38,7 +39,10 @@ class VideoConsumer(AsyncWebsocketConsumer):
             await self.channel_layer.group_send(
             self.room_group_name, {"type": "send_message", "message": [event_data["sender"],event_data["message"]]}
         )
-
+        elif type=="leave":
+            await self.channel_layer.group_send(
+                self.room_group_name, {"type":"send_leave","message":event_data["leaver"]}
+            )
 
         # Send message to room group
       
@@ -90,3 +94,9 @@ class VideoConsumer(AsyncWebsocketConsumer):
 
         # Send message to WebSocket
         await self.send(text_data=json.dumps({"type":"Message","message": message,"sender":sender}))
+
+    async def send_leave(self,event):
+        leaver = event["message"]
+
+        await self.send(text_data=json.dumps({"type":"leave","leaver":leaver}))
+        

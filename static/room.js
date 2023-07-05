@@ -5,6 +5,7 @@ let Username = sessionStorage.getItem('username');
 let Body = document.getElementById('body')
 let ToggleCamera = document.getElementById('Toggle-Camera')
 let ToggleMic = document.getElementById('Toggle-Mic')
+let LeaveBtn = document.getElementById('Leave-Room')
 
 let localstream;
 let peerconnections={};
@@ -26,10 +27,33 @@ let socket = new WebSocket('ws://'+ window.location.host + '/ws/'+ RoomName + '/
 servers = {
     iceServers: [
         {
-            urls: 'stun:stun.l.google.com:19302',
-        },
+            urls: "stun:stun.relay.metered.ca:80",
+          },
+          {
+            urls: "turn:a.relay.metered.ca:80",
+            username: "4d73a99f4c44ab658087fbf2",
+            credential: "3V39Fhb7xm/qMeDC",
+          },
+          /*{
+            urls: "turn:a.relay.metered.ca:80?transport=tcp",
+            username: "4d73a99f4c44ab658087fbf2",
+            credential: "3V39Fhb7xm/qMeDC",
+          },
+          {
+            urls: "turn:a.relay.metered.ca:443",
+            username: "4d73a99f4c44ab658087fbf2",
+            credential: "3V39Fhb7xm/qMeDC",
+          },
+          {
+            urls: "turn:a.relay.metered.ca:443?transport=tcp",
+            username: "4d73a99f4c44ab658087fbf2",
+            credential: "3V39Fhb7xm/qMeDC",
+          }, */
     ],
 }
+
+
+
 
 socket.onmessage = event =>{
     const event_data = JSON.parse(event.data)
@@ -45,12 +69,36 @@ socket.onmessage = event =>{
     else if (event_data["type"]=="Message"){
         document.querySelector("#Chat-Log").value += (event_data["sender"]+' ----> '+event_data["message"] + '\n')
     }
+    else if (event_data["type"]=="leave"){
+        if (event_data["leaver"]!=Username){
+          peerconnections[event_data["leaver"]].close()
+          delete peerconnections[event_data["leaver"]]
+          document.getElementById(event_data["leaver"]+"video").remove()
+        }
+    }
 
+}
+
+socket.onclose = ()=>{
+    if (users.length>1){
+    let ind = users.indexof(Username)
+    users.splice(ind,1)
+}
+}
+
+function leaveroom(){
+    socket.send(JSON.stringify({
+        "type":"leave",
+        "leaver":Username
+    }))
+    socket.close()
+    window.location.pathname = '/'
 }
 
 function Initiateoffer(){
     for (let i=0;i<users.length;i++){
         if (users[i]!=Username){
+            console.log("sending offer to "+users[i])
             const PeerConnection = new RTCPeerConnection(servers)
 
             localstream.getTracks().forEach(track => {
@@ -60,6 +108,7 @@ function Initiateoffer(){
 
             const RemoteVideo =  document.createElement('video')
             RemoteVideo.autoplay = true
+            RemoteVideo.id = users[i]+"video"
             remotevideos[users[i]] = RemoteVideo
 
             Body.appendChild(RemoteVideo)
@@ -113,6 +162,7 @@ function handleOffer(event_data){
 
         const RemoteVideo = document.createElement('video')
         RemoteVideo.autoplay = true;
+        RemoteVideo.id = event_data["sender"]+"video"
         remotevideos[event_data["sender"]] = RemoteVideo
 
         Body.appendChild(RemoteVideo)
@@ -178,7 +228,7 @@ function handleCandidates(event_data){
         PeerConnection.addIceCandidate(Newcandidate).then(()=>{
             console.log("success adding the candidates")
         }).catch(e=>{
-            console.log('error')
+            console.log(e)
         })
     }
     else{
@@ -205,6 +255,7 @@ document.querySelector('#Message-Submit').onclick = e =>{
 
 ToggleCamera.addEventListener("click" , togglecamera)
 ToggleMic.addEventListener("click" , togglemic)
+LeaveBtn.addEventListener("click" , leaveroom)
 
 
 

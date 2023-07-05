@@ -14,6 +14,5 @@
                         alert('Please enter both the room name and username.');
                       } else {
                         sessionStorage.setItem('username', username);
-
                       } 
                 }
