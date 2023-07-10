@@ -25,30 +25,7 @@ navigator.mediaDevices.getUserMedia({video:true,audio:true}).then(stream=>{
 let socket = new WebSocket('ws://'+ window.location.host + '/ws/'+ RoomName + '/')
 
 servers = {
-    iceServers: [
-        {
-            urls: "stun:stun.relay.metered.ca:80",
-          },
-          {
-            urls: "turn:a.relay.metered.ca:80",
-            username: "4d73a99f4c44ab658087fbf2",
-            credential: "3V39Fhb7xm/qMeDC",
-          },
-          /*{
-            urls: "turn:a.relay.metered.ca:80?transport=tcp",
-            username: "4d73a99f4c44ab658087fbf2",
-            credential: "3V39Fhb7xm/qMeDC",
-          },
-          {
-            urls: "turn:a.relay.metered.ca:443",
-            username: "4d73a99f4c44ab658087fbf2",
-            credential: "3V39Fhb7xm/qMeDC",
-          },
-          {
-            urls: "turn:a.relay.metered.ca:443?transport=tcp",
-            username: "4d73a99f4c44ab658087fbf2",
-            credential: "3V39Fhb7xm/qMeDC",
-          }, */
+    iceServers: [ {urls:"stun:stun.l.google.com:19302"}
     ],
 }
 
