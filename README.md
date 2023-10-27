@@ -32,7 +32,8 @@ Welcome to the WebRTC Meet-Up application! This is a general-purpose meet applic
     Use the room chat for text communication.
 
 ### Replacing the TURN Servers
-To ensure the privacy and performance of your WebRTC connections, it is recommended to replace the default TURN servers with your own. You can obtain free TURN servers from OpenRelay. To do this:
+To ensure the privacy and performance of your WebRTC connections, it is recommended to replace the default TURN servers with your own. You can obtain free TURN servers from OpenRelay. 
+### To do this:
     - Visit OpenRelay and register for an account if you don't have one.
     - Obtain your TURN server credentials (TURN server URL, username, and password).
     - Replace the TURN server configuration in the application (room.js) under newpeertopeer connection
