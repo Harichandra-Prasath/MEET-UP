@@ -17,13 +17,13 @@ Welcome to the WebRTC Meet-Up application! This is a general-purpose meet applic
 - WebRTC-compatible web browsers (e.g., Chrome, Firefox)
 
 ### Steps
-   git clone https://github.com/Harichandra-Prasath/MEET-UP/
-   cd webrtc-meetup
-   python -m venv venv
-   source venv/bin/activate
-   pip install -r requirements.txt
-   python manage.py migrate
-   python manage.py runserver
+- git clone https://github.com/Harichandra-Prasath/MEET-UP/.
+- cd webrtc-meetup.
+- python -m venv venv.
+- source venv/bin/activate.
+- pip install -r requirements.txt.
+- python manage.py migrate.
+- python manage.py runserver.
 
 ### Usage
     Create a room or join an existing one.
@@ -33,7 +33,7 @@ Welcome to the WebRTC Meet-Up application! This is a general-purpose meet applic
 
 ### Replacing the TURN Servers
 To ensure the privacy and performance of your WebRTC connections, it is recommended to replace the default TURN servers with your own. You can obtain free TURN servers from OpenRelay. To do this:
-    Visit OpenRelay and register for an account if you don't have one.
-    Obtain your TURN server credentials (TURN server URL, username, and password).
-    Replace the TURN server configuration in the application (room.js) under newpeertopeer connection
+    - Visit OpenRelay and register for an account if you don't have one.
+    - Obtain your TURN server credentials (TURN server URL, username, and password).
+    - Replace the TURN server configuration in the application (room.js) under newpeertopeer connection
 
