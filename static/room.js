@@ -16,7 +16,7 @@ const DEBUG = (...args) => console.log('[HCP-DEBUG]', ...args)
 
 
 // const socket = new WebSocket('ws://'+ window.location.host + '/ws/'+ RoomName + '/');
-const socket = new WebSocket(`wss://${window.location.host}/ws/${RoomName}/`);  // elegant
+const socket = new WebSocket(`ws://${window.location.host}/ws/${RoomName}/`);  // elegant
 
 (async () => {
     const result = await fetch('/api/getServer')
@@ -249,7 +249,7 @@ ToggleCamera.addEventListener("click", togglecamera)
 ToggleMic.addEventListener("click", togglemic)
 LeaveBtn.addEventListener("click", leaveroom)
 
-
+window.addEventListener("beforeunload", leaveroom);
 
 function togglecamera() {
     let videotrack = localstream.getTracks().find(track => track.kind === "video")
