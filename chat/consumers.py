@@ -1,6 +1,7 @@
 from channels.generic.websocket import AsyncWebsocketConsumer
 from asgiref.sync import async_to_sync
 import json
+from .views import users
 
 class VideoConsumer(AsyncWebsocketConsumer):
     async def connect(self):
@@ -40,6 +41,7 @@ class VideoConsumer(AsyncWebsocketConsumer):
             self.room_group_name, {"type": "send_message", "message": [event_data["sender"],event_data["message"]]}
         )
         elif type=="leave":
+            users.remove(event_data["leaver"])
             await self.channel_layer.group_send(
                 self.room_group_name, {"type":"send_leave","message":event_data["leaver"]}
             )

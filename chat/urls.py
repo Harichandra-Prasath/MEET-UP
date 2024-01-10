@@ -3,5 +3,6 @@ from .views import *
 
 urlpatterns = [
     path("" ,JoinRoom ),
-    path("<str:room_name>/" ,Room)
+    path("<str:room_name>/" ,Room),
+    path("api/getServer/",getservers)
 ]

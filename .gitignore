@@ -2,4 +2,5 @@
 .env
 __pycache__
 chat/migrations
-a.html
+db.sqlite3
+credentials.json

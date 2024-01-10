@@ -5,7 +5,7 @@
         <title>Video Chat</title>
     </head>
     <body id="body">
-        <video id="local-stream" autoplay></video>
+        <video id="local-stream" autoplay height="480px" width="640px"></video>
         {{ room_name|json_script:"room-name"}}
         <textarea id="Chat-Log" cols="50" rows="50" style="position:absolute;right:10px"></textarea>
         <input type="text" id="Message-Input" style="position: absolute;right: 170px;bottom:170px">
@@ -14,7 +14,9 @@
         <input type = "button" id="Toggle-Mic" value="Mute Audio" style="position: absolute;right: 280px;bottom:140px" >
         <input type = "button" id="Leave-Room" value="Leave Room" style="position: absolute;right: 80px;bottom:140px" >
         {{ users|json_script:"users"}}
+        {{ Servers|json_script:"Servers"}}
 
     </body>
-    <script src="{% static 'room.js' %}"></script>
+    <script
+     src="{% static 'room.js' %}"></script>
 </html>
