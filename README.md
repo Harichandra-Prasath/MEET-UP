@@ -22,6 +22,7 @@ Welcome to the WebRTC Meet-Up application! This is a general-purpose meet applic
 - python -m venv venv.
 - source venv/bin/activate.
 - pip install -r requirements.txt.
+- python manage.py makemigrations
 - python manage.py migrate.
 - python manage.py runserver.
 
@@ -36,5 +37,19 @@ To ensure the privacy and performance of your WebRTC connections, it is recommen
 ### To do this:
 - Visit OpenRelay and register for an account if you don't have one.
 - Obtain your TURN server credentials (TURN server URL, username, and password).
-- Replace the TURN server configuration in the application (room.js) under newpeertopeer connection
+- Create "credentials.json" file with the obtained server details with key "servers"
+
+#### Example credentials.json
+```bash
+{
+  "servers": [
+    {
+      "urls": ""
+    },{
+      "urls": "",
+      "username": "",
+      "credential": ""
+    }]
+}
+```
 
