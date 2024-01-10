@@ -16,7 +16,7 @@ const DEBUG = (...args) => console.log('[HCP-DEBUG]', ...args)
 
 
 // const socket = new WebSocket('ws://'+ window.location.host + '/ws/'+ RoomName + '/');
-const socket = new WebSocket(`ws://${window.location.host}/ws/${RoomName}/`);  // elegant
+const socket = new WebSocket(`wss://${window.location.host}/ws/${RoomName}/`);  // elegant
 
 (async () => {
     const result = await fetch('/api/getServer')
@@ -30,6 +30,7 @@ const socket = new WebSocket(`ws://${window.location.host}/ws/${RoomName}/`);  /
         const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true })  // await here
         localstream = stream
         LocalVideo.srcObject = stream
+        LocalVideo.volume = 0
         LocalVideo.style.transform = 'scaleX(-1)';
         if (users.length > 1) {
             Initiateoffer(servers)

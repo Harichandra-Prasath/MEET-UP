@@ -31,6 +31,8 @@ Welcome to the WebRTC Meet-Up application! This is a general-purpose meet applic
     Share your camera and microphone.
     Enjoy real-time video and audio communication.
     Use the room chat for text communication.
+    Customise Frontend as you like
+    Make sure to replace wss to ws in roomjs for local testing
 
 ### Replacing the TURN Servers
 To ensure the privacy and performance of your WebRTC connections, it is recommended to replace the default TURN servers with your own. You can obtain free TURN servers from OpenRelay. 
