@@ -1,0 +1,34 @@
+{% load static %}
+
+<html lang="en">
+    <head>
+        <title>Meet</title>
+    </head>
+    <body>
+        Enter the room name you want to join
+        <form action="{% url 'index' %}" method="post">
+            {% csrf_token %}
+            <br>
+            <input id="Room-Name-Input" type="text" name="room">
+            <input id="room-Submit" type="submit" value="Enter">
+        </form>
+        
+        
+    </body>
+    <script>
+        document.querySelector("#Room-Name-Input").onkeyup = e =>{
+            if (e.keyCode === 13){
+              document.querySelector("#Room-Name-Submit").click()
+              }
+          }
+        
+        document.querySelector("#room-Submit").onclick = e => {
+            var roomname = document.querySelector('#Room-Name-Input').value
+                              
+          if ( roomname === '') {
+            e.preventDefault()
+            alert('Please Enter a username to continue');
+            }
+          }
+    </script>
+</html>

@@ -7,18 +7,26 @@
     <body>
         Enter the name you wish to use?<br>
         <br>
-        <form method="POST" action="">
+        <form action="" method="post">
             {% csrf_token %}
             <input id="User-Name-Input" type="text" name="user">
             <br>
             <br>
-            Enter the room name you wish to enter?<br>
-            <br>
-            <input id="Room-Name-Input" type="text" name="room">
-            <input id="Room-Name-Submit" type="submit" value="Enter">
+            <input id="lobby-Submit" type="submit" value="Enter">
         </form>
         
         
     </body>
-    <script src="{% static 'lobby.js'%}"></script>
+    <script>
+        document.querySelector("#lobby-Submit").onclick = e => {
+            var username = document.querySelector('#User-Name-Input').value
+                              
+          if ( username === '') {
+            e.preventDefault()
+            alert('Please Enter a username to continue');
+            }else {
+              sessionStorage.setItem('username', username);
+            } 
+          }
+    </script>
 </html>

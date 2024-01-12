@@ -1,7 +1,7 @@
 from channels.generic.websocket import AsyncWebsocketConsumer
-from asgiref.sync import async_to_sync
 import json
-from .views import users
+from .views import maps
+
 
 class VideoConsumer(AsyncWebsocketConsumer):
     async def connect(self):
@@ -21,17 +21,15 @@ class VideoConsumer(AsyncWebsocketConsumer):
         type = event_data["type"]
 
         if type=="offer":
-            #print(event_data["user"],event_data["offer"])
             await self.channel_layer.group_send(
             self.room_group_name, {"type": "send_offer", "message": [event_data["sender"],event_data["offer"],event_data["reciever"]]}
         )
         elif type=="answer":
-            #print(event_data["user"],event_data["answer"])
+            
             await self.channel_layer.group_send(
             self.room_group_name, {"type": "send_answer", "message": [event_data["sender"],event_data["answer"],event_data["reciever"]]}
         )
         elif type=="ice-candidate":
-            #print(event_data["sender"],event_data["icecandidates"])
             await self.channel_layer.group_send(
             self.room_group_name, {"type": "send_candidate", "message": [event_data["sender"],event_data["icecandidates"],event_data["reciever"]]}
         )
@@ -41,7 +39,7 @@ class VideoConsumer(AsyncWebsocketConsumer):
             self.room_group_name, {"type": "send_message", "message": [event_data["sender"],event_data["message"]]}
         )
         elif type=="leave":
-            users.remove(event_data["leaver"])
+            maps[0][self.room_name].remove(event_data["leaver"])
             await self.channel_layer.group_send(
                 self.room_group_name, {"type":"send_leave","message":event_data["leaver"]}
             )
@@ -53,6 +51,7 @@ class VideoConsumer(AsyncWebsocketConsumer):
         user = event["message"][0]
         message = event["message"][1]
         reciever = event["message"][2]
+        print(f"Offer Sent by {user} to {reciever}")
 
         # Send message to WebSocket
         await self.send(text_data=json.dumps({
@@ -68,6 +67,7 @@ class VideoConsumer(AsyncWebsocketConsumer):
         message = event["message"][1]
         reciever = event["message"][2]
 
+        print(f"Sending offer from {user} to {reciever}")
         # Send message to WebSocket
         await self.send(text_data=json.dumps({
             "sender":user,
@@ -99,6 +99,6 @@ class VideoConsumer(AsyncWebsocketConsumer):
 
     async def send_leave(self,event):
         leaver = event["message"]
-
+        print(f"{leaver} left the room")
         await self.send(text_data=json.dumps({"type":"leave","leaver":leaver}))
         
