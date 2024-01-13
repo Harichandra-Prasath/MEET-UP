@@ -1,0 +1,24 @@
+{% extends "chat/layout.html" %}
+{% block title %}
+Register
+{%endblock%}
+
+
+{% block body %}
+
+    <h2>Register</h2>
+
+    {% if message %}
+        <div>{{ message }}</div>
+    {% endif %}
+
+    <form action="{% url 'register' %}" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            {{ form }}
+        </div>
+        <input class="btn btn-primary" type="submit" value="Register">
+    </form>
+
+
+{% endblock %}
