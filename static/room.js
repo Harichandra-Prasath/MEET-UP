@@ -59,6 +59,8 @@ const socket = new WebSocket(`wss://${window.location.host}/ws/${RoomName}/`);  
                 peerconnections[event_data["leaver"]].close()
                 delete peerconnections[event_data["leaver"]]
                 document.getElementById(event_data["leaver"] + "video").remove()
+                let ind = users.indexOf(event_data["leaver"])
+                users.splice(ind, 1)
             }
         }
 
@@ -67,13 +69,6 @@ const socket = new WebSocket(`wss://${window.location.host}/ws/${RoomName}/`);  
 })()
 
 
-
-socket.onclose = () => {
-    if (users.length > 1) {
-        let ind = users.indexof(Username)
-        users.splice(ind, 1)
-    }
-}
 
 function leaveroom() {
     socket.send(JSON.stringify({

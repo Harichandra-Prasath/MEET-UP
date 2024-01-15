@@ -26,12 +26,27 @@ Welcome to the WebRTC Meet-Up application! This is a general-purpose meet applic
 - python manage.py migrate.
 - python manage.py runserver.
 
+### .env
+- Create a .env file at the root of the directory including the below
+```bash
+NGROK= (If you have a permanent hosting link) (optional)
+SECRET= (The secret you want to use for signing jwts) (Required)
+SECRET_KEY= (django secret key for the application) (Required)
+```
+Generate a secret key by 
+```bash
+python3 -c 'from django.core.management.utils import get_random_secret_key; print(get_random_secret_key())'
+```
+
+
 ### Usage
     Create a room or join an existing one.
     Share your camera and microphone.
     Enjoy real-time video and audio communication.
     Use the room chat for text communication.
-    Customise Frontend as you like
+    If you dont want to enter details everytime, create a account at /accounts/register/  
+    Login with your credentials at /accounts/login/  
+       
     Make sure to replace wss to ws in roomjs for local testing
 
 ### Replacing the TURN Servers
