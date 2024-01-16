@@ -1,11 +1,12 @@
 let RoomName = JSON.parse(document.getElementById("room-name").textContent)
 let users = JSON.parse(document.getElementById("users").textContent)
 let LocalVideo = document.getElementById("local-stream")
-let Username = sessionStorage.getItem('username');
+let Username = JSON.parse(document.getElementById("username").textContent)
 let Body = document.getElementById('body')
 let ToggleCamera = document.getElementById('Toggle-Camera')
 let ToggleMic = document.getElementById('Toggle-Mic')
 let LeaveBtn = document.getElementById('Leave-Room')
+
 
 
 let localstream;
@@ -13,7 +14,6 @@ let peerconnections = {};
 let remotevideos = {};
 
 const DEBUG = (...args) => console.log('[HCP-DEBUG]', ...args)
-
 
 // const socket = new WebSocket('ws://'+ window.location.host + '/ws/'+ RoomName + '/');
 const socket = new WebSocket(`wss://${window.location.host}/ws/${RoomName}/`);  // elegant

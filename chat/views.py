@@ -19,25 +19,31 @@ servers = data.get('servers',[])
 def JoinRoom(request):
     if request.method=="POST":
         room = request.POST.get('room')
-        url = "/"+room+'/'
+        url = "/room/"+room+'/'
         return HttpResponseRedirect(url)
     return render(request , "chat/index.html")
 
 
 def Room(request , room_name):
     if request.COOKIES.get('jwt'):
+        print("Session based")
         payload = jwt.decode(request.COOKIES['jwt'],secret,algorithms="HS256")
+        print(f"{payload['user']} Joined the room")
         Process(payload['user'],room_name,maps)
         return render(request , 'chat/room.html' , {
             "room_name":room_name,
             "users": maps[0][room_name],
+            "username":payload['user']
         })
     if request.method=="POST":
+        print("Not session Based")
         user = request.POST.get('user')
         Process(user,room_name,maps)
+        print(f"{user} Joined the room")
         return render(request , 'chat/room.html' , {
             "room_name":room_name,
             "users": maps[0][room_name],
+            "username":user
         })
     return render(request , "chat/lobby.html")
 
@@ -103,6 +109,11 @@ def login_view(request):
                 response = HttpResponseRedirect(reverse("index"))
                 response.set_cookie('jwt',token,max_age=30*24*60*60)
                 return response
+            else:
+                return render(request,"chat/login.html",{
+                        "message":"Invalid Credentials",
+                        "form":form
+                    })
 
     else:
         form = Login_form()

@@ -14,7 +14,7 @@
         <input type = "button" id="Toggle-Mic" value="Mute Audio" style="position: absolute;right: 280px;bottom:140px" >
         <input type = "button" id="Leave-Room" value="Leave Room" style="position: absolute;right: 80px;bottom:140px" >
         {{ users|json_script:"users"}}
-        {{ Servers|json_script:"Servers"}}
+        {{ username|json_script:"username"}}
 
     </body>
     <script
