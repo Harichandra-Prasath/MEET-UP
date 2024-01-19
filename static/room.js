@@ -6,17 +6,18 @@ let Body = document.getElementById('body')
 let ToggleCamera = document.getElementById('Toggle-Camera')
 let ToggleMic = document.getElementById('Toggle-Mic')
 let LeaveBtn = document.getElementById('Leave-Room')
-
+let ShareBtn = document.getElementById("share");
 
 
 let localstream;
 let peerconnections = {};
 let remotevideos = {};
+let ShareScreen
 
 const DEBUG = (...args) => console.log('[HCP-DEBUG]', ...args)
 
 // const socket = new WebSocket('ws://'+ window.location.host + '/ws/'+ RoomName + '/');
-const socket = new WebSocket(`wss://${window.location.host}/ws/${RoomName}/`);  // elegant
+const socket = new WebSocket(`ws://${window.location.host}/ws/${RoomName}/`);  // elegant
 
 (async () => {
     const result = await fetch('/api/getServer')
@@ -62,6 +63,22 @@ const socket = new WebSocket(`wss://${window.location.host}/ws/${RoomName}/`);  
                 let ind = users.indexOf(event_data["leaver"])
                 users.splice(ind, 1)
             }
+        }
+        else if (event_data["type"]=="Share_notif_start"){
+            if (event_data["Sharer"]!=Username){
+                let screenVideo = document.createElement('img')
+                screenVideo.id = "screenVideo"
+                screenVideo.height = 480
+                screenVideo.width = 640
+                Body.appendChild(screenVideo)
+                ShareScreen = document.getElementById('screenVideo')
+            }
+        }
+        else if (event_data["type"]=="Share_data"){
+            ShareScreen.src = event_data["data"] 
+        }
+        else if (event_data["type"]=="Share_notif_end"){
+            ShareScreen.remove()
         }
 
     }
@@ -244,6 +261,7 @@ document.querySelector('#Message-Submit').onclick = e => {
 ToggleCamera.addEventListener("click", togglecamera)
 ToggleMic.addEventListener("click", togglemic)
 LeaveBtn.addEventListener("click", leaveroom)
+ShareBtn.addEventListener("click", Sharescreen)
 
 window.addEventListener("beforeunload", leaveroom);
 
@@ -272,4 +290,40 @@ function togglemic() {
         ToggleMic.value = "Mute Audio"
     }
 }
+const displayMediaOptions = {
+    video: true,
+    audio: true,
+  };
+  
 
+async function Sharescreen() {
+    try{
+        let screenVideo = document.createElement('video')
+        screenVideo.autoplay
+        screenVideo.autoplay = true;
+        screenVideo.height = 480
+        screenVideo.width = 640
+        Body.appendChild(screenVideo)
+        screenVideo.srcObject = await navigator.mediaDevices.getDisplayMedia(displayMediaOptions)
+        socket.send(JSON.stringify({
+            "type": "Share_notif_start",
+            "Sharer": Username,
+        }))
+        setInterval(function() {
+            var canvas = document.createElement('canvas');                                    // creating a canvas to send the webcam frames to backend
+            canvas.width = screenVideo.videoWidth;
+            canvas.height = screenVideo.videoHeight;
+            var context = canvas.getContext('2d')
+            context.drawImage(screenVideo, 0, 0, canvas.width, canvas.height);
+            var jpegDataUrl = canvas.toDataURL('image/jpeg' , 0.5);                               // sending the frames as base64 encoded jpeg image  
+            socket.send(JSON.stringify({
+                "type": "Share_data",
+                "data": jpegDataUrl,
+            })) 
+        }, 1000 / 60);
+
+    } catch (err){
+        console.log(err)
+    }
+    
+}
