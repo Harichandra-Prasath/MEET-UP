@@ -45,18 +45,7 @@ class VideoConsumer(AsyncWebsocketConsumer):
             await self.channel_layer.group_send(
                 self.room_group_name, {"type":"send_leave","message":event_data["leaver"]}
             )
-        elif type=="Share_notif_start":
-            await self.channel_layer.group_send(
-                self.room_group_name, {"type":"send_share_notif_start","message":event_data["Sharer"]}
-            )
-        elif type=="Share_data":
-            await self.channel_layer.group_send(
-                self.room_group_name, {"type":"send_share_data","message":event_data["data"]}
-            )
-        elif type=="Share_notif_end":
-            await self.channel_layer.group_send(
-                self.room_group_name, {"type":"send_share_notif_end","message":event_data["Sharer"]}
-            )
+        
 
         # Send message to room group
       
@@ -116,14 +105,4 @@ class VideoConsumer(AsyncWebsocketConsumer):
         print(f"{leaver} left the room")
         await self.send(text_data=json.dumps({"type":"leave","leaver":leaver}))
     
-    async def send_share_notif_start(self,event):
-        Sharer = event["message"]
-        await self.send(text_data=json.dumps({"type":"Share_notif","Sharer":Sharer}))
-    
-    async def send_share_notif_end(self,event):
-        Sharer = event["message"]
-        await self.send(text_data=json.dumps({"type":"Share_notif","Sharer":Sharer}))
-    
-    async def send_share_data(self,event):
-        data = event["message"]
-        await self.send(text_data=json.dumps({"type":"Share_data","data":data}))
+   

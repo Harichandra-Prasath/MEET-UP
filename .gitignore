@@ -5,3 +5,4 @@ chat/migrations
 db.sqlite3
 credentials.json
 Makefile
+static
