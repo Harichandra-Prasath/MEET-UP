@@ -76,8 +76,23 @@ function leaveroom() {
         "leaver": Username
     }))
     socket.close()
-    window.location.pathname = '/'
-}
+    fetch(`/room/remove/${RoomName}`, {
+        method: "DELETE",
+        body: JSON.stringify({
+            user: Username,
+        }),
+        headers: {
+            "Content-type": "application/json; charset=UTF-8"
+        }
+        }).then((response) => {
+            if (response.ok){
+                window.location.pathname = '/'
+            }else{
+                throw new Error('Api request failed')
+            }
+        })}
+
+    
 
 function Initiateoffer(servers) {
     for (let i = 0; i < users.length; i++) {

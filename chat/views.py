@@ -3,6 +3,10 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse,HttpResponseRedirect
 import json
 from .forms import *
+
+import django
+django.setup()
+
 from django.contrib.auth.models import User
 from django.urls import reverse
 import jwt
@@ -123,3 +127,12 @@ def logout_view(request):
     response = HttpResponseRedirect(reverse('index'))
     response.set_cookie("jwt","",expires=time.time()-24*60*60)
     return response
+
+@csrf_exempt
+def remove_user(request,room_name):
+    if request.method=="DELETE":
+        user = json.loads(request.body.decode())['user']
+
+        maps[0][room_name].remove(user)
+        return JsonResponse({"Status":"Success","Message":"User removed"})
+    return JsonResponse({"Status":"Error","Message":"Method now allowed"})
