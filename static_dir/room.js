@@ -98,7 +98,7 @@ function Initiateoffer(servers) {
     for (let i = 0; i < users.length; i++) {
         if (users[i] != Username) {
             console.log("sending offer to " + users[i])
-            const PeerConnection = new RTCPeerConnection(servers)
+            const PeerConnection = new RTCPeerConnection(servers);
 
             localstream.getTracks().forEach(track => {
                 PeerConnection.addTrack(track, localstream)
@@ -155,7 +155,7 @@ function Initiateoffer(servers) {
 function handleOffer(event_data,servers) {
     if (event_data['reciever'] == Username) {
         if (!peerconnections.hasOwnProperty(event_data['sender'])) {
-            const PeerConnection = new RTCPeerConnection(servers)
+            const PeerConnection = new RTCPeerConnection(servers);
 
             localstream.getTracks().forEach(track => {
                 PeerConnection.addTrack(track, localstream)
@@ -209,7 +209,7 @@ function handleOffer(event_data,servers) {
 
 function handleAnswer(event_data) {
     if (event_data["reciever"] == Username) {
-        const PeerConnection = peerconnections[event_data['sender']]
+        const PeerConnection = peerconnections[event_data['sender']];
         PeerConnection.setRemoteDescription(new RTCSessionDescription(event_data["answer"]))
     }
     else {
@@ -226,7 +226,7 @@ function handleCandidates(event_data) {
         }
         );
 
-        const PeerConnection = peerconnections[event_data["sender"]]
+        const PeerConnection = peerconnections[event_data["sender"]];
 
         PeerConnection.addIceCandidate(Newcandidate).then(() => {
             console.log("success adding the candidates")

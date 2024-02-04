@@ -134,5 +134,10 @@ def remove_user(request,room_name):
         user = json.loads(request.body.decode())['user']
 
         maps[0][room_name].remove(user)
+        if len(maps[0][room_name])==0:     ## No user in current room
+            #remove the room
+            maps[0].pop(room_name)
+            print(maps[0])
+
         return JsonResponse({"Status":"Success","Message":"User removed"})
     return JsonResponse({"Status":"Error","Message":"Method now allowed"})
